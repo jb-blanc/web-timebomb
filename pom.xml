@@ -14,6 +14,21 @@
 	<name>timebomb</name>
 	<description>Timebomb board game adaptation</description>
 
+	<developers>
+		<developer>
+			<id>jb-blanc</id>
+			<name>Jean-Baptiste BLANC</name>
+			<roles>
+				<role>developers</role>
+			</roles>
+		</developer>
+	</developers>
+	<scm>
+		<url>https://github.com/jb-blanc/web-timebomb</url>
+		<connection>scm:git:ssh://git@github.com/jb-blanc/web-timebomb.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com/jb-blanc/web-timebomb.git</developerConnection>
+	</scm>
+
 	<properties>
 		<java.version>8</java.version>
 	</properties>
@@ -73,11 +88,27 @@
 
 	</dependencies>
 
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>GitHub JiBiBi Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/jb-blanc/web-timebomb</url>
+		</repository>
+	</distributionManagement>
+
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.5.3</version>
+				<configuration>
+					<useReleaseProfile>false</useReleaseProfile>
+					<tagNameFormat>v@{version}</tagNameFormat>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
