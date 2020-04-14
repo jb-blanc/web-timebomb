@@ -1,0 +1,57 @@
+.tmb-opponent-card:hover {
+    cursor: pointer;
+}
+
+.tmb-card {
+    height : 150px;
+    width : 100px;
+    display: inline-block;
+    margin : 5px;
+}
+
+.hidden {
+    display: none;
+}
+
+.tmb-cut {
+    border : 2px dashed red;
+}
+
+.tmb-NOTVISIBLE {
+    background-image: url("images/wire_hidden.png");
+}
+
+.tmb-DEFUSE {
+    background-image: url("images/wire_defuse.png");
+}
+
+.tmb-NORMAL {
+    background-image: url("images/wire_normal.png");
+}
+
+.tmb-BIGBEN {
+    background-image: url("images/bigben.png");
+}
+
+.tmb-SHERLOCK {
+    background-image: url("images/sherlock.png");
+}
+
+.tmb-MORIARTY {
+    background-image: url("images/moriarty.png");
+}
+
+#tmb-yourturn {
+    color: darkblue;
+    font-size:4em;
+}
+
+#tmb-youwin {
+    color: darkgreen;
+    font-size:4em;
+}
+
+#tmb-youloose {
+    color: darkred;
+    font-size:4em;
+}

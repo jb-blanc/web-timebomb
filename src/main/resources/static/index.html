@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Time Bomb</title>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/main.css" rel="stylesheet">
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="/app.js"></script>
+</head>
+<body>
+<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
+    enabled. Please enable
+    Javascript and reload this page!</h2></noscript>
+<div id="main-content" class="container-fluid">
+    <div class="row">
+        <div id="tmb-gameView" class="col-10 tmb-game-view container-fluid">
+            <div class="row">
+                <div id="tmb-myView" class="col-12 tmb-player-view tmb-player">
+                    <h1>My cards</h1>
+                    <div class="row">
+                        <div class="col-1">
+                            <div id="tmb-side-card" class="tmb-card hidden"></div>
+                        </div>
+                        <div class="col-7">
+                            <div id="tmb-cards">
+
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <h1 id="tmb-yourturn" class="hidden">YOUR TURN !</h1>
+                            <h1 id="tmb-youwin" class="hidden">YOU WON !</h1>
+                            <h1 id="tmb-youloose" class="hidden">YOU LOST !</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="tmb-opponent-views">
+
+            </div>
+        </div>
+        <div class="col-2">
+            <div class="col-12">
+                <h4>Player</h4>
+                <form class="form-inline">
+                    <div class="form-group col-9">
+                        <input type="text" id="name" class="form-control" placeholder="Your name here...">
+                    </div>
+                    <button id="send" class="btn btn-success col-3" type="submit">Join</button>
+                </form>
+            </div>
+            <div class="col-12">
+                <h4>Game Controls</h4>
+                <a href="#" id="tmb-startBtn" class="btn btn-sm btn-success col-12">Start</a>
+                <a href="#" id="tmb-nextRoundBtn" class="btn btn-sm btn-primary col-12">Next round</a>
+            </div>
+            <div class="col-12">
+                <h4>Game infos</h4>
+                <ul>
+                    <li>Current player : <span id="tmb-labelCurrentPlayer"></span></li>
+                    <li>Defused wires : <span id="tmb-labelDefusedWires"></span></li>
+                    <li>Remaining rounds : <span id="tmb-labelRemainingRounds"></span></li>
+                    <li>Remaining cuts : <span id="tmb-labelRemainingCuts"></span></li>
+                    <li>Winner : <span id="tmb-labelWinner"></span></li>
+                </ul>
+            </div>
+            <div class="col-12">
+                <h4><span id="tmb-playerCount">0</span> players</h4>
+                <ul id="tmb-playerList">
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
