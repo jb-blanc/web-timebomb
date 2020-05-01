@@ -1,15 +1,16 @@
 package fr.jibibi.timebomb.controller;
 
-import fr.jibibi.timebomb.message.in.JoinMessage;
-import fr.jibibi.timebomb.message.in.QuitMessage;
-import fr.jibibi.timebomb.message.out.InfoMessage;
-import fr.jibibi.timebomb.message.out.PlayerLobbyMessage;
+import fr.jibibi.timebomb.message.game.in.JoinMessage;
+import fr.jibibi.timebomb.message.game.in.QuitMessage;
+import fr.jibibi.timebomb.message.game.out.InfoMessage;
+import fr.jibibi.timebomb.message.game.out.PlayerLobbyMessage;
 import fr.jibibi.timebomb.service.GameService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
 
@@ -19,9 +20,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
-public class LobbyController {
+public class RoomController {
 
-    private static final Logger log = LoggerFactory.getLogger(LobbyController.class);
+    private static final Logger log = LoggerFactory.getLogger(RoomController.class);
+
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
 
     @Autowired
     private GameService gameService;
@@ -32,7 +36,7 @@ public class LobbyController {
         return gameService.getPlayers().stream().map(p -> new PlayerLobbyMessage(p.getName(), true)).collect(Collectors.toList());
     }
 
-    @MessageMapping("/join")
+    @MessageMapping("/joinGame")
     @SendToUser("/server/joined")
     public Map<String,Boolean> joinGame(JoinMessage message){
         String playerName = message.getPlayerName();
@@ -48,7 +52,7 @@ public class LobbyController {
         return map;
     }
 
-    @MessageMapping("/quit")
+    @MessageMapping("/quitGame")
     @SendTo("/server/player")
     public PlayerLobbyMessage quitGame(QuitMessage message){
         String playerName = message.getPlayerName();

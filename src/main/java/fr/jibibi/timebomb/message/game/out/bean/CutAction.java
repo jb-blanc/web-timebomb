@@ -1,4 +1,4 @@
-package fr.jibibi.timebomb.message.out.bean;
+package fr.jibibi.timebomb.message.game.out.bean;
 
 
 import lombok.AllArgsConstructor;

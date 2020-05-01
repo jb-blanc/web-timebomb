@@ -1,4 +1,4 @@
-package fr.jibibi.timebomb.message.out.bean;
+package fr.jibibi.timebomb.message.game.out.bean;
 
 import fr.jibibi.timebomb.bean.Card;
 import fr.jibibi.timebomb.bean.Pair;

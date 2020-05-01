@@ -1,15 +1,16 @@
-package fr.jibibi.timebomb.message.out;
+package fr.jibibi.timebomb.message.server.out;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Setter @Getter
-public class InfoMessage {
+public class CreatedGameMessage {
 
-    private String message;
+    private String gameUUID;
 
 }

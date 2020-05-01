@@ -1,4 +1,4 @@
-package fr.jibibi.timebomb.message.in;
+package fr.jibibi.timebomb.message.game.in;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

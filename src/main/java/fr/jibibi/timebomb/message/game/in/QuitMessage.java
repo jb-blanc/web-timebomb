@@ -1,4 +1,4 @@
-package fr.jibibi.timebomb.message.out;
+package fr.jibibi.timebomb.message.game.in;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,10 +7,10 @@ import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter @Setter
-public class PlayerLobbyMessage {
+public class QuitMessage {
 
-    private String name;
-    private boolean present;
+    @Getter
+    @Setter
+    private String playerName;
 
 }

@@ -7,14 +7,48 @@
     <script src="/webjars/jquery/jquery.min.js"></script>
     <script src="/webjars/sockjs-client/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/stomp.min.js"></script>
-    <script src="/app.js"></script>
 </head>
 <body>
 <noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
     enabled. Please enable
     Javascript and reload this page!</h2></noscript>
 <div id="main-content" class="container-fluid">
-    <div class="row">
+
+    <div class="row tmb-server-view">
+        <div class="col-6 offset-3">
+            <h1>Time Bomb</h1>
+            <form id="tmb-server-connect-form">
+                <div class="form-row">
+                    <div class="col">
+                        <input id="tmb-player-name" type="text" class="form-control" placeholder="Your name">
+                    </div>
+                    <div class="col">
+                        <a href="#" id="tmb-connect-server" type="submit" class="btn btn-success">Connect</a>
+                    </div>
+                </div>
+            </form>
+            <form id="tmb-game-form" class="hidden">
+                <div class="form-row">
+                    <div class="col">
+                        <input id="tmb-game-id" type="text" class="form-control" placeholder="Game ID">
+                    </div>
+                    <div class="col">
+                        <a href="#" id="tmb-join-game" type="submit" class="btn btn-success">Join Game</a>
+                    </div>
+                </div>
+                <div class="form-row">
+                    &nbsp;
+                </div>
+                <div class="form-row">
+                    <div class="col">
+                        <a href="#" id="tmb-create-game"  type="submit" class="btn btn-warning">Create Game</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row tmb-room-view hidden">
         <div id="tmb-gameView" class="col-10 tmb-game-view container-fluid">
             <div class="row">
                 <div id="tmb-myView" class="col-12 tmb-player-view tmb-player">
@@ -74,5 +108,6 @@
         </div>
     </div>
 </div>
+<script src="/lobby.js"></script>
 </body>
 </html>

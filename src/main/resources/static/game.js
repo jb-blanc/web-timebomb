@@ -1,5 +1,3 @@
-var stompClient = null;
-var playerName = null;
 var players = [];
 var myTurn = false;
 var turnEnded = false;
@@ -15,25 +13,6 @@ function setConnected(connected) {
     else {
         $("#tmb-game").hide();
     }
-}
-
-function connect() {
-    var socket = new SockJS('/timebomb');
-    stompClient = Stomp.over(socket);
-    stompClient.connect({}, function (frame) {
-        stompClient.subscribe('/user/server/joined', function (playerInfo) {
-            var info = JSON.parse(playerInfo.body)
-            if(info.connected){
-                registerStompRoutes();
-                setConnected(true);
-                updatePlayers();
-            }
-            else{
-                window.alert("You can't join during a game.");
-                setConnected(false);
-            }
-        });
-    });
 }
 
 function registerStompRoutes(){
@@ -106,17 +85,6 @@ var askReveal = function(){
     if(gameEnded){
         stompClient.send("/game/askReveal", {}, JSON.stringify({'playerName': this.playerName}));
     }
-}
-
-function disconnect() {
-    stompClient.send("/game/quit", {}, JSON.stringify({'playerName': this.playerName}));
-    stompClient.disconnect();
-    setConnected(false);
-}
-
-function connectToGame() {
-    this.playerName = $("#name").val();
-    stompClient.send("/game/join", {}, JSON.stringify({'playerName': this.playerName}));
 }
 
 function setMyTeam(team){

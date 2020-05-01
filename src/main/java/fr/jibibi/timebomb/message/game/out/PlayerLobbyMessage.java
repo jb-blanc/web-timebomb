@@ -1,4 +1,4 @@
-package fr.jibibi.timebomb.message.in;
+package fr.jibibi.timebomb.message.game.out;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,10 +7,10 @@ import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
-public class JoinMessage {
+@Getter @Setter
+public class PlayerLobbyMessage {
 
-    @Getter
-    @Setter
-    private String playerName;
+    private String name;
+    private boolean present;
 
 }

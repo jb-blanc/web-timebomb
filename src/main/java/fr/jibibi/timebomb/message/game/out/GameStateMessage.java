@@ -1,7 +1,7 @@
-package fr.jibibi.timebomb.message.out;
+package fr.jibibi.timebomb.message.game.out;
 
 import fr.jibibi.timebomb.enums.Teams;
-import fr.jibibi.timebomb.message.out.bean.CutAction;
+import fr.jibibi.timebomb.message.game.out.bean.CutAction;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

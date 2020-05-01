@@ -5,7 +5,7 @@ import fr.jibibi.timebomb.bean.GameSettings;
 import fr.jibibi.timebomb.bean.Pair;
 import fr.jibibi.timebomb.bean.Player;
 import fr.jibibi.timebomb.controller.GameController;
-import fr.jibibi.timebomb.controller.LobbyController;
+import fr.jibibi.timebomb.controller.RoomController;
 import fr.jibibi.timebomb.enums.CardType;
 import fr.jibibi.timebomb.enums.Teams;
 import lombok.Getter;
@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,7 +25,7 @@ public class GameService {
     private static final Logger log = LoggerFactory.getLogger(GameService.class);
 
     @Autowired
-    private LobbyController lobbyController;
+    private RoomController roomController;
     @Autowired
     private GameController gameController;
 
@@ -133,7 +132,7 @@ public class GameService {
     public void startGame() {
         this.reset();
         if (players.size() < 4 || players.size() > 8) {
-            lobbyController.sendMessage("Nombre de joueurs incorrect");
+            roomController.sendMessage("Nombre de joueurs incorrect");
         }
         else{
             this.gameRunning = true;

@@ -1,8 +1,8 @@
-package fr.jibibi.timebomb.message.out;
+package fr.jibibi.timebomb.message.game.out;
 
 import fr.jibibi.timebomb.enums.Teams;
-import fr.jibibi.timebomb.message.out.bean.CardInfo;
-import fr.jibibi.timebomb.message.out.bean.PlayerCardInfo;
+import fr.jibibi.timebomb.message.game.out.bean.CardInfo;
+import fr.jibibi.timebomb.message.game.out.bean.PlayerCardInfo;
 import lombok.Getter;
 import lombok.Setter;
 
