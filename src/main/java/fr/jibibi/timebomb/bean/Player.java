@@ -35,9 +35,10 @@ public class Player {
         cards.add(new Pair<>(poll,false));
     }
 
-    public Card removeCard(int index){
-        cards.get(index).setValue2(true);
-        return cards.get(index).getValue1();
+    public Card removeCard(int id){
+        Pair<Card, Boolean> pair = cards.stream().filter(p -> p.getValue1().getId() == id).findFirst().get();
+        pair.setValue2(true);
+        return pair.getValue1();
     }
 
     @Override

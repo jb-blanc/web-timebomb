@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 public class CutAction {
     String name;
-    int index;
+    int id;
     String type;
 }
 

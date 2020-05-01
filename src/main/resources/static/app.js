@@ -7,6 +7,14 @@ var gameStarted = false;
 var gameEnded = false;
 var myTeam = null;
 
+var playSoundTurn = false;
+var playSoundExplosion = false;
+var playSoundVictory = false;
+
+var soundYourTurn = new Audio('/sounds/yourturn.mp3');
+var soundExplosion = new Audio('/sounds/bomb.mp3');
+var soundVictory = new Audio('/sounds/victory.mp3');
+
 function setConnected(connected) {
     $("#send").prop("disabled", connected);
     if (connected) {
@@ -80,8 +88,8 @@ function registerStompRoutes(){
     });
 }
 
-function cutOpponentCard(opponent, index){
-    stompClient.send("/game/cut", {}, JSON.stringify({'player': opponent, 'index': index}));
+function cutOpponentCard(opponent, id){
+    stompClient.send("/game/cut", {}, JSON.stringify({'player': opponent, 'id': id}));
 }
 
 function getAllCards(){
@@ -137,6 +145,7 @@ function transformGameStateInfo(info){
 
     if(myTurn){
         $("#tmb-yourturn").removeClass("hidden");
+        playSoundTurn = true;
     }
     else{
         $("#tmb-yourturn").addClass("hidden");
@@ -146,6 +155,13 @@ function transformGameStateInfo(info){
         gameEnded = info.gameEnded;
         askReveal(playerName);
         if(info.winner){
+            if(info.winner == "SHERLOCK"){
+                playSoundVictory = true;
+            }
+            else{
+                playSoundExplosion = true;
+            }
+
             if(info.winner == myTeam){
                 $("#tmb-youwin").removeClass("hidden");
                 $("#tmb-yourturn").addClass("hidden");
@@ -175,6 +191,23 @@ function transformGameStateInfo(info){
     else{
         $("#tmb-nextRoundBtn").addClass("disabled");
     }
+
+    playSounds();
+}
+
+function playSounds(){
+    if(playSoundExplosion){
+        soundExplosion.play();
+    }
+    else if(playSoundVictory){
+        soundVictory.play();
+    }
+    else if(playSoundTurn){
+        soundYourTurn.play();
+    }
+    playSoundVictory = false;
+    playSoundTurn = false;
+    playSoundExplosion = false;
 }
 
 function displayReveal(info){
@@ -191,14 +224,15 @@ function displayGameInfos(infos){
     $("#tmb-labelRemainingCuts").html(infos.cutRemaining);
     $("#tmb-labelWinner").html(infos.winner);
     $("#tmb-labelDefusedWires").html(infos.defusedWires);
+    $("#tmb-labelRemainingWires").html(infos.remainingWires);
 }
 
 function cardCut(info){
     if(info.name == playerName){
-        $("#tmb-cards").find(".tmb-card-"+info.index).addClass("tmb-cut");
+        $("#tmb-cards").find(".tmb-my-card[data-cardid='"+info.id+"']").addClass("tmb-cut");
     }
     else{
-        var c = $(".tmb-card-"+info.name+"-"+info.index);
+        var c = $(".tmb-card-"+info.name+"[data-cardid='"+info.id+"']");
         c.data("type",info.type);
         c.removeClass("tmb-NOTVISIBLE")
         c.addClass("tmb-"+info.type)
@@ -207,9 +241,10 @@ function cardCut(info){
 
 function drawMyCards(cards){
     var html = "";
+    cards = shuffle(cards);
     for(var i=0;i<cards.length;i++){
         var c = cards[i];
-        html += '<div class="tmb-card tmb-card-'+i+' tmb-'+c.type+' '+(c.cut == true ? 'tmb-cut' : '')+'" data-index="'+i+'"></div>'
+        html += '<div class="tmb-card tmb-my-card tmb-'+c.type+' '+(c.cut == true ? 'tmb-cut' : '')+'" data-cardid="'+c.id+'"></div>'
     }
     $("#tmb-cards").html(html);
 }
@@ -218,18 +253,19 @@ function drawOpponentCards(opponents){
     opponents.forEach(o => {
         if(o.name != playerName){
             var html = "";
-            for(var i=0;i<o.cards.length;i++){
-                var c = o.cards[i];
-                html += '<div class="tmb-card tmb-opponent-card tmb-card-'+o.name+'-'+i+' tmb-'+c.type+'" data-type='+c.type+' data-index="'+i+'" data-player="'+o.name+'"></div>'
+            var cards = shuffle(o.cards)
+            for(var i=0;i<cards.length;i++){
+                var c = cards[i];
+                html += '<div class="tmb-card tmb-opponent-card tmb-card-'+o.name+' tmb-'+c.type+'" data-type='+c.type+' data-cardid="'+c.id+'" data-player="'+o.name+'"></div>'
             }
             $("#tmb-cards-"+o.name).html(html);
             $("#tmb-cards-"+o.name+" .tmb-card").click(e => {
                 if(myTurn && !turnEnded && !gameEnded){
                     var player = $(e.target).data("player");
-                    var index = $(e.target).data("index");
+                    var id = $(e.target).data("cardid");
                     var type = $(e.target).data("type");
                     if(type == "NOTVISIBLE"){
-                        cutOpponentCard(player, index);
+                        cutOpponentCard(player, id);
                     }
                 }
             });
@@ -300,6 +336,17 @@ function addPlayerView(player){
         '<h4>'+player.name+' cards</h4>'+
         '<div id="tmb-cards-'+player.name+'" class="tmb-opponent-cards">'+
         '</div></div>');
+}
+
+function shuffle(array){
+    var i = array.length-1
+    for(i;i>0;i--){
+      var j = Math.floor(Math.random() * i);
+      var temp = array[i];
+      array[i] = array[j];
+      array[j] = temp;
+    }
+    return array;
 }
 
 

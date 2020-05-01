@@ -20,7 +20,7 @@ public class PlayerCardInfo {
         cards.forEach(pair -> {
             String type = pair.getValue1().getType().toString();
             Boolean cut = pair.getValue2();
-            this.cards.add(new CardInfo((cut || force) ? type : "NOTVISIBLE", cut));
+            this.cards.add(new CardInfo((cut || force) ? type : "NOTVISIBLE", cut, pair.getValue1().getId()));
         });
     }
 

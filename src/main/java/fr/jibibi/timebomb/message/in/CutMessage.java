@@ -12,6 +12,6 @@ public class CutMessage {
     @Setter @Getter
     private String player;
     @Setter @Getter
-    private Integer index;
+    private Integer id;
 
 }

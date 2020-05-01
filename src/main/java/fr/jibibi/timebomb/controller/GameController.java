@@ -45,11 +45,11 @@ public class GameController {
     @SuppressWarnings("OptionalGetWithoutIsPresent")
     public GameStateMessage playerPlayed(CutMessage message){
         log.info("Player has played : {}", message);
-        Card c = gameService.getPlayers().stream().filter(p -> p.getName().equals(message.getPlayer())).findFirst().get().removeCard(message.getIndex());
+        Card c = gameService.getPlayers().stream().filter(p -> p.getName().equals(message.getPlayer())).findFirst().get().removeCard(message.getId());
         gameService.cardCut(message.getPlayer(), c);
         gameService.decreaseTurnCount();
 
-        return generateGameState(new CutAction(message.getPlayer(), message.getIndex(), c.getType().toString()));
+        return generateGameState(new CutAction(message.getPlayer(), message.getId(), c.getType().toString()));
     }
 
     @MessageMapping("/nextRound")
@@ -72,7 +72,7 @@ public class GameController {
         for(Player p : gameService.getPlayers()){
             if(p.getName().equals(playerName)){
                 message.setMyTeam(p.getTeam());
-                message.setPlayer(p.getCards().stream().map(pair -> new CardInfo(pair.getValue1().getType().toString(), pair.getValue2())).collect(Collectors.toList()));
+                message.setPlayer(p.getCards().stream().map(pair -> new CardInfo(pair.getValue1().getType().toString(), pair.getValue2(), pair.getValue1().getId())).collect(Collectors.toList()));
             }
             else{
                 message.getOpponents().add(new PlayerCardInfo(p.getName(), p.getCards()));
@@ -119,6 +119,7 @@ public class GameController {
         gameState.setRoundRemaining(gameService.getCurrentTurnCardCount() - 1);
         gameState.setTurnEnded(gameService.isEndTurn());
         gameState.setDefusedWires(gameService.getDefusedWiresCount());
+        gameState.setRemainingWires(gameService.getPlayers().size() - gameService.getDefusedWiresCount());
         if(winner != null){
             HashMap<String, Teams> reveal = new HashMap<>();
             gameService.getPlayers().forEach(p -> reveal.put(p.getName(),p.getTeam()));

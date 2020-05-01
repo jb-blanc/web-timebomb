@@ -21,6 +21,7 @@ public class GameStateMessage {
     private Integer cutRemaining;
     private Integer roundRemaining;
     private Integer defusedWires;
+    private Integer remainingWires;
     private boolean turnEnded;
     private HashMap<String, Teams> reveal;
 
