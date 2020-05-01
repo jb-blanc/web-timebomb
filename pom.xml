@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>fr.jibibi</groupId>
 	<artifactId>timebomb</artifactId>
-	<version>1.1</version>
+	<version>1.2-SNAPSHOT</version>
 	<name>timebomb</name>
 	<description>Timebomb board game adaptation</description>
 
@@ -26,7 +26,7 @@
 		<url>https://github.com/jb-blanc/web-timebomb</url>
 		<connection>scm:git:ssh://git@github.com/jb-blanc/web-timebomb.git</connection>
 		<developerConnection>scm:git:ssh://git@github.com/jb-blanc/web-timebomb.git</developerConnection>
-	  <tag>v1.1</tag>
+	  <tag>HEAD</tag>
   </scm>
 
 	<properties>
