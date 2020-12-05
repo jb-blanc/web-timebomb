@@ -124,6 +124,8 @@ function disconnect() {
 
 function connectToGame() {
     this.playerName = $("#name").val();
+    this.playerName = this.playerName.replaceAll(" ","_");
+    $("#name").val(this.playerName);
     stompClient.send("/game/join", {}, JSON.stringify({'playerName': this.playerName}));
 }
 
