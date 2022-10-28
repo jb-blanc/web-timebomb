@@ -12,14 +12,14 @@ import java.util.Random;
 @AllArgsConstructor
 @ToString
 public class Card {
-    public static Random random = new Random();
-    public static int NEXT_ID = random.nextInt(100);
+    private static Random random = new Random();
+    private static int nextId = random.nextInt(100);
 
     private CardType type;
     private int id;
 
     public Card(CardType type){
         this.type = type;
-        this.id = NEXT_ID++;
+        this.id = nextId++;
     }
 }

@@ -7,9 +7,8 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @NoArgsConstructor
 public class Player {
@@ -36,13 +35,18 @@ public class Player {
     }
 
     public Card removeCard(int id){
-        Pair<Card, Boolean> pair = cards.stream().filter(p -> p.getValue1().getId() == id).findFirst().get();
-        pair.setValue2(true);
-        return pair.getValue1();
+        Optional<Pair<Card, Boolean>> first = cards.stream().filter(p -> p.getValue1().getId() == id).findFirst();
+        if(first.isPresent()) {
+            Pair<Card, Boolean> pair = first.get();
+            pair.setValue2(true);
+            return pair.getValue1();
+        }
+        else
+            return null;
     }
 
     @Override
     public String toString() {
-        return String.format("Player %s (%s) : "+ cards.stream().map(Pair::toString).collect(Collectors.joining(",")), name, team.name());
+        return String.format("Player %s (%s) : %s", name, team.name(), cards.stream().map(Pair::toString).collect(Collectors.joining(",")));
     }
 }

@@ -42,6 +42,7 @@ public class GameSettings {
                 break;
             case 7:
             case 8:
+            default:
                 this.sherlockCount = 5;
                 this.moriartyCount = 3;
                 break;

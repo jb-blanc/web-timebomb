@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,6 +46,9 @@ public class GameService {
     @Getter @Setter
     private boolean gameRunning;
 
+
+    Random rd = new Random();
+
     @PostConstruct
     public void init(){
         this.players = new ArrayList<>();
@@ -67,7 +69,8 @@ public class GameService {
     public void cardCut(String player, Card c){
         remainingCuts -= 1;
         this.discarded.add(c);
-        this.currentPlayer = players.stream().filter(p -> p.getName().equals(player)).findFirst().get();
+        Optional<Player> first = players.stream().filter(p -> p.getName().equals(player)).findFirst();
+        first.ifPresent(value -> this.currentPlayer = value);
     }
 
     public boolean isEndTurn(){
@@ -85,9 +88,9 @@ public class GameService {
     }
 
     public void endTurn(){
-        List<Card> cards = players.stream().map(Player::getCards).flatMap(Collection::stream).filter(pair -> !pair.getValue2()).map(Pair::getValue1).collect(Collectors.toList());
-        Collections.shuffle(cards);
-        this.cards = new ArrayDeque<>(cards);
+        List<Card> allCards = players.stream().map(Player::getCards).flatMap(Collection::stream).filter(pair -> !pair.getValue2()).map(Pair::getValue1).collect(Collectors.toList());
+        Collections.shuffle(allCards);
+        this.cards = new ArrayDeque<>(allCards);
         this.remainingCuts = players.size();
         players.forEach(p -> p.setCards(new ArrayList<>()));
         dealCards(this.currentTurnCardCount);
@@ -101,7 +104,7 @@ public class GameService {
                     bigben.set(true);
                 }
             });
-        };
+        }
 
         Teams winner = null;
 
@@ -150,7 +153,6 @@ public class GameService {
     }
 
     private void pickRandomCurrentPlayer() {
-        Random rd = new Random();
         currentPlayer = players.get(rd.nextInt(players.size()));
     }
 
@@ -158,7 +160,7 @@ public class GameService {
         log.info("============= GAME STATE ================");
         log.info("Current player : {}", currentPlayer.getName());
         for (Player p : players) {
-            log.info(p.toString());
+            log.info("{}", p);
         }
         log.info("=========================================");
     }
@@ -166,7 +168,6 @@ public class GameService {
     private void createTeams() {
         int countMori = 0;
         int countSher = 0;
-        Random rand = new Random();
         for(Player p : players){
             if(countMori == settings.getMoriartyCount()){
                 p.setTeam(Teams.SHERLOCK);
@@ -177,7 +178,7 @@ public class GameService {
                 countMori += 1;
             }
             else{
-                int r = rand.nextInt(1000);
+                int r = rd.nextInt(1000);
                 if(r < 500){
                     p.setTeam(Teams.SHERLOCK);
                     countSher += 1;

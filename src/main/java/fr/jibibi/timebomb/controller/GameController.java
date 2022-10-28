@@ -19,9 +19,7 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -45,11 +43,17 @@ public class GameController {
     @SuppressWarnings("OptionalGetWithoutIsPresent")
     public GameStateMessage playerPlayed(CutMessage message){
         log.info("Player has played : {}", message);
-        Card c = gameService.getPlayers().stream().filter(p -> p.getName().equals(message.getPlayer())).findFirst().get().removeCard(message.getId());
-        gameService.cardCut(message.getPlayer(), c);
-        gameService.decreaseTurnCount();
+        Optional<Player> first = gameService.getPlayers().stream().filter(p -> p.getName().equals(message.getPlayer())).findFirst();
+        if(first.isPresent()) {
+            Card c = first.get().removeCard(message.getId());
+            gameService.cardCut(message.getPlayer(), c);
+            gameService.decreaseTurnCount();
 
-        return generateGameState(new CutAction(message.getPlayer(), message.getId(), c.getType().toString()));
+            return generateGameState(new CutAction(message.getPlayer(), message.getId(), c.getType().toString()));
+        }
+        else {
+            return null;
+        }
     }
 
     @MessageMapping("/nextRound")
@@ -87,7 +91,7 @@ public class GameController {
 
     @MessageMapping("/askReveal")
     @SendToUser("/server/reveal")
-    public HashMap<String, Object> revealRoles(JoinMessage player){
+    public Map<String, Object> revealRoles(JoinMessage player){
         log.info("Sending reveal to player {}", player.getPlayerName());
         HashMap<String, Object> reveals = new HashMap<>();
 
